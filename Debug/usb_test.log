@@ -1,0 +1,2 @@
+﻿  Źródłow.cpp
+c:\users\nela\source\repos\usb_test\usb_test\unistd.h(56): fatal error C1083: Nie można otworzyć pliku dołącz: 'sys/utsname.h': No such file or directory
