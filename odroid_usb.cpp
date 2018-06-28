@@ -51,7 +51,7 @@ void set_mincount(int fd, int mcount)
 	}
 
 	tty.c_cc[VMIN] = mcount ? 1 : 0;
-	tty.c_cc[VTIME] = 5;        /* half second timer */
+	tty.c_cc[VTIME] = 5;        
 
 	if (tcsetattr(fd, TCSANOW, &tty) < 0)
 		printf("Error tcsetattr: %s\n", strerror(errno));
@@ -68,7 +68,7 @@ int main(){
 		return -1;
 	}
 	else
-		printf("I have opened\n");
+		printf("I have opened port\n");
 
 	set_interface_attribs(usb, B115200);
 	char keyboard[15];
@@ -77,7 +77,7 @@ int main(){
 	int usblen;
 
 	while(true){
-		//PISANIE
+		//Writing
 		if (scanf("%s", &keyboard[0])==1)
 			printf("Wysylam %s\n", keyboard);
 	
@@ -89,24 +89,15 @@ int main(){
 			printf("I wrote\n");
 		tcdrain(usb);    
 	
-		//ODBIERANIE
+		//Receiving
 		usblen = read(usb, buf, sizeof(buf) - 1);
 		if (usblen > 0) {
-		//#ifdef DISPLAY_STRING
 			buf[usblen] = 0;
 			printf("Read %d:\"%s\"\n", usblen, buf);
-		//#else 
-		//	unsigned char   *p;
-		//	printf("Read %d:", rdlen);
-		//	for (p = buf; rdlen-- > 0; p++)
-		//		printf(" 0x%x", *p);
-		//	printf("\n");
-		//#endif
 		}
 		else if (usblen < 0) {
 			printf("Error from read: %d: %s\n", usblen, strerror(errno));
 		}
 	}
-
 }
 
